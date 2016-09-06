@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimerTask;
 
 import jess.JessException;
 import jess.Rete;
 
-public class Test extends TimerTask {
+public class Test {
 
 	static Rete engine = new Rete();
 
@@ -21,6 +24,7 @@ public class Test extends TimerTask {
 		/// home/abhishek/softwares/Jess71p2/bin/jess
 
 		// System.out.println(args[0]);
+		float ttt, tft, ttf, tff, tt, ft, ff, tf, t, f;
 
 		try {
 			// engine.executeCommand("(bind ?cm (new Test))");
@@ -56,22 +60,23 @@ public class Test extends TimerTask {
 		if (Integer.parseInt(args[0]) == 0) {
 			// System.out.println("its unrelable");
 
-			float ttt, tft, ttf, tff, tt, ft, ff, tf, t, f;
+			
 			// ttt
 			Test test = new Test();
 			Search_table st = test.new Search_table();
 			// System.out.println(st.search("./grasswet_table.txt","ftt"));
+			String folderName= findSeason();
 
-			ttt = st.search("./grasswet_table.txt", "ttt");
-			tft = st.search("./grasswet_table.txt", "tft");
-			ttf = st.search("./grasswet_table.txt", "ttf");
-			tff = st.search("./grasswet_table.txt", "tff");
-			tt = st.search("./sprinkler_table.txt", "tt");
-			ft = st.search("./sprinkler_table.txt", "ft");
-			tf = st.search("./sprinkler_table.txt", "tf");
-			ff = st.search("./sprinkler_table.txt", "ff");
-			t = st.search("./rain_table.txt", "t");
-			f = st.search("./rain_table.txt", "f");
+			ttt = st.search("../tables/"+folderName+"/grasswet_table.txt", "ttt");
+			tft = st.search("../tables/"+folderName+"/grasswet_table.txt", "tft");
+			ttf = st.search("../tables/"+folderName+"/grasswet_table.txt", "ttf");
+			tff = st.search("../tables/"+folderName+"/grasswet_table.txt", "tff");
+			tt = st.search("../tables/"+folderName+"/sprinkler_table.txt", "tt");
+			ft = st.search("../tables/"+folderName+"/sprinkler_table.txt", "ft");
+			tf = st.search("../tables/"+folderName+"/sprinkler_table.txt", "tf");
+			ff = st.search("../tables/"+folderName+"/sprinkler_table.txt", "ff");
+			t = st.search("../tables/"+folderName+"/rain_table.txt", "t");
+			f = st.search("../tables/"+folderName+"/rain_table.txt", "f");
 
 			// System.out.println(ttt+" "+tt+" "+t);
 			// System.out.println(tft+" "+ft+" "+t);
@@ -84,6 +89,7 @@ public class Test extends TimerTask {
 			// System.out.println(ttt+" "+tft+" "+ttf+" "+tff);
 
 			double probAns = (ttt + tft) / (ttt + ttf + tft + tff);
+			//System.out.println(folderName);
 			// System.out.println(Math.round(probAns*100) +" %");
 			// System.out.println(0);
 			callPy(0);
@@ -95,84 +101,24 @@ public class Test extends TimerTask {
 		// timer.schedule(new Test(),0,1000);
 
 	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		// Rete engine = new Rete();
-
-		try {
-			// engine.executeCommand("(close mo)");
-			String rain = null;
-			try {
-				rain = new String(Files.readAllBytes(Paths.get("./rain.txt")));
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			rain = rain.toString();
-
-			// int rainInt;
-
-			// int rainI = Integer.parseInt(rain);
-			// rainInt=Integer.parseInt(rain);
-			// System.out.println("The rain value is "+rain);
-			// System.out.println(rain);
-
-			if (rain.contains("0")) {
-				// System.out.println("its unrelable");
-
-				float ttt, tft, ttf, tff, tt, ft, ff, tf, t, f;
-				// ttt
-				Search_table st = new Search_table();
-				// System.out.println(st.search("./grasswet_table.txt","ftt"));
-
-				ttt = st.search("./grasswet_table.txt", "ttt");
-				tft = st.search("./grasswet_table.txt", "tft");
-				ttf = st.search("./grasswet_table.txt", "ttf");
-				tff = st.search("./grasswet_table.txt", "tff");
-				tt = st.search("./sprinkler_table.txt", "tt");
-				ft = st.search("./sprinkler_table.txt", "ft");
-				tf = st.search("./sprinkler_table.txt", "tf");
-				ff = st.search("./sprinkler_table.txt", "ff");
-				t = st.search("./rain_table.txt", "t");
-				f = st.search("./rain_table.txt", "f");
-
-				// System.out.println(ttt+" "+tt+" "+t);
-				// System.out.println(tft+" "+ft+" "+t);
-				// System.out.println(tff+" "+ff+" "+f);
-
-				ttt = ttt * tt * t;
-				tft = tft * ft * t;
-				ttf = ttf * tf * f;
-				tff = tff * ff * f;
-				// System.out.println(ttt+" "+tft+" "+ttf+" "+tff);
-
-				double probAns = (ttt + tft) / (ttt + ttf + tft + tff);
-				// System.out.println(Math.round(probAns*100) +" %");
-				engine.executeCommand("(open \"rain1.txt\" file \"w\")");
-
-				int ans = (int) Math.round(probAns * 100);
-
-				engine.executeCommand("(printout file \" \n " + ans + " \" crlf)");
-
-			} else {
-
-				// System.out.println("its relaible");
-				String cmd = "(assert (house (rain 1)))";
-				engine.executeCommand(cmd);
-				engine.executeCommand("(run)");
-
-			}
-
-		} catch (JessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	
+	static String findSeason(){
+		DateFormat dateFormat = new SimpleDateFormat("MM");
+		Date date = new Date();
+		int idate = Integer.parseInt(dateFormat.format(date).toString());
+		//System.out.println(idate); //2016/11/16 12:08:43
+		 
+		if(idate>=2 && idate<8){
+			return "summer";
+		}else if(idate>=8 && idate<11){
+			return "rainy";
+		}else{
+			return "winter";
 		}
-
+		//return idate;
 	}
 
+	
 	public class Search_table {
 		String search_key, file_name, curr_string;
 		String[] split_words;
