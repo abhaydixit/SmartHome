@@ -26,7 +26,7 @@ public class Test {
 			//float rain;
 			String rain ="0";
 	        try {
-				  rain = new String(Files.readAllBytes(Paths.get("/home/abhishek/java_workspace/JESS/rain.txt")));
+				  rain = new String(Files.readAllBytes(Paths.get("./rain.txt")));
 				  System.out.println("The rain value is "+rain);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

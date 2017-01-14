@@ -13,7 +13,7 @@ public class Check extends TimerTask{
 		String rain;
 		
 		try {
-			rain = new String(Files.readAllBytes(Paths.get("/home/abhishek/java_workspace/JESS/check.txt")));
+			rain = new String(Files.readAllBytes(Paths.get("./rain.txt")));
 			
 			  System.out.println("The rain value is "+rain);
 
