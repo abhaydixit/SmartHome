@@ -87,7 +87,9 @@ public class Test extends TimerTask{
 		        	//System.out.println(ttt+" "+tft+" "+ttf+" "+tff);
 		        		
 		        	double probAns=(ttt+tft)/(ttt+ttf+tft+tff);
-		        	System.out.println(Math.round(probAns*100) +" %");
+		        	//System.out.println(Math.round(probAns*100) +" %");
+		        	//System.out.println(0);
+		        	callPy(0);
 		 			
 		 		}
 		 		
@@ -260,7 +262,7 @@ public class Test extends TimerTask{
 		}
 
 	
-	public void callPy(int value){
+	public static void callPy(int value){
 		String s = null;
 		  
 		  int hString=value;
