@@ -48,13 +48,48 @@ public class Test extends TimerTask{
 			String cmd="(assert (house (rain "+args[0]+")))";
 			engine.executeCommand(cmd);
 			engine.executeCommand("(run)");
-//			
+//			arg
 			
 
 		} catch (JessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 		
+		 		if(Integer.parseInt(args[0])==0){
+		 			//System.out.println("its unrelable");
+		        	
+		        	float ttt,tft,ttf,tff,tt,ft,ff,tf,t,f;
+		        	//ttt
+		        	Test test = new Test();
+		        	Search_table st= test.new Search_table();
+		        	//System.out.println(st.search("./grasswet_table.txt","ftt"));
+		        	
+		        	ttt = st.search("./grasswet_table.txt","ttt");
+		        	tft = st.search("./grasswet_table.txt","tft");
+		        	ttf = st.search("./grasswet_table.txt","ttf");
+		        	tff = st.search("./grasswet_table.txt","tff");
+		        	tt  = st.search("./sprinkler_table.txt","tt");
+		        	ft  = st.search("./sprinkler_table.txt","ft");
+		        	tf  = st.search("./sprinkler_table.txt","tf");
+		        	ff  = st.search("./sprinkler_table.txt","ff");
+		        	t   = st.search("./rain_table.txt","t");
+		        	f   = st.search("./rain_table.txt","f");
+		        	
+		        	//System.out.println(ttt+" "+tt+" "+t);
+		        	//System.out.println(tft+" "+ft+" "+t);
+		        	//System.out.println(tff+" "+ff+" "+f);
+		        	
+		        	ttt=ttt*tt*t;
+		        	tft=tft*ft*t;
+		        	ttf=ttf*tf*f;
+		        	tff=tff*ff*f;
+		        	//System.out.println(ttt+" "+tft+" "+ttf+" "+tff);
+		        		
+		        	double probAns=(ttt+tft)/(ttt+ttf+tft+tff);
+		        	System.out.println(Math.round(probAns*100) +" %");
+		 			
+		 		}
 		 		
 //		
 //		Timer timer = new Timer();
@@ -63,11 +98,7 @@ public class Test extends TimerTask{
 				
 		
 	}
-public static void callme(String a) {
-		
-		System.out.println(a);
-		
-	}
+
 	
 
 	@Override
@@ -158,6 +189,8 @@ public static void callme(String a) {
 		
 	}
 	
+	
+	
 	public class Search_table {
 		String search_key,file_name,curr_string;
 		String[] split_words;
@@ -223,12 +256,9 @@ public static void callme(String a) {
 		
 		
 		
-//		public static void main(String args[]) {
-//			
-//			new Search_table().search("./sprinkler_table.txt","tt");
-//			
-//		}
+		
 		}
+
 	
 	public void callPy(int value){
 		String s = null;
