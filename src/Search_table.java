@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
-public class search_table {
+public class Search_table {
 	String search_key,file_name,curr_string;
 	String[] split_words;
 	
@@ -73,7 +73,7 @@ public class search_table {
 	
 	public static void main(String args[]) {
 		
-		new search_table().search("./sprinkler_table.txt","tt");
+		new Search_table().search("./sprinkler_table.txt","tt");
 		
 	}
 	}
