@@ -1,0 +1,4 @@
+javac -cp ./jess.jar Test.java
+
+java -cp .:./jess.jar Test
+
