@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import jess.JessException;
 import jess.Rete;
+
 
 public class Test {
 
@@ -24,6 +26,7 @@ public class Test {
 		/// home/abhishek/softwares/Jess71p2/bin/jess
 
 		// System.out.println(args[0]);
+		
 		float ttt, tft, ttf, tff, tt, ft, ff, tf, t, f;
 
 		try {
@@ -65,18 +68,29 @@ public class Test {
 			Test test = new Test();
 			Search_table st = test.new Search_table();
 			// System.out.println(st.search("./grasswet_table.txt","ftt"));
-			String folderName= findSeason();
+			String resString,resStringArr[];
+			String season=null,rainTableName=null;
+			if((resString=findSeason())!=null){
+				resStringArr=resString.split(",");
+				season=resStringArr[0];
+				rainTableName=resStringArr[1]+".txt";
+				System.out.println(rainTableName);
+			}
+			
+			//String path="";
+			
+			int threshHoldSummer=14,threshHoldWinter=48,threshHoldRainy=95,pySignal=0,finalRes;
 
-			ttt = st.search("../tables/"+folderName+"/grasswet_table.txt", "ttt");
-			tft = st.search("../tables/"+folderName+"/grasswet_table.txt", "tft");
-			ttf = st.search("../tables/"+folderName+"/grasswet_table.txt", "ttf");
-			tff = st.search("../tables/"+folderName+"/grasswet_table.txt", "tff");
-			tt = st.search("../tables/"+folderName+"/sprinkler_table.txt", "tt");
-			ft = st.search("../tables/"+folderName+"/sprinkler_table.txt", "ft");
-			tf = st.search("../tables/"+folderName+"/sprinkler_table.txt", "tf");
-			ff = st.search("../tables/"+folderName+"/sprinkler_table.txt", "ff");
-			t = st.search("../tables/"+folderName+"/rain_table.txt", "t");
-			f = st.search("../tables/"+folderName+"/rain_table.txt", "f");
+			ttt = st.search("../tables/"+season+"/grasswet_table.txt", "ttt");
+			tft = st.search("../tables/"+season+"/grasswet_table.txt", "tft");
+			ttf = st.search("../tables/"+season+"/grasswet_table.txt", "ttf");
+			tff = st.search("../tables/"+season+"/grasswet_table.txt", "tff");
+			tt = st.search("../tables/"+season+"/sprinkler_table.txt", "tt");
+			ft = st.search("../tables/"+season+"/sprinkler_table.txt", "ft");
+			tf = st.search("../tables/"+season+"/sprinkler_table.txt", "tf");
+			ff = st.search("../tables/"+season+"/sprinkler_table.txt", "ff");
+			t = st.search("../tables/"+season+"/"+rainTableName, "t");
+			f = st.search("../tables/"+season+"/"+rainTableName, "f");
 
 			// System.out.println(ttt+" "+tt+" "+t);
 			// System.out.println(tft+" "+ft+" "+t);
@@ -89,10 +103,31 @@ public class Test {
 			// System.out.println(ttt+" "+tft+" "+ttf+" "+tff);
 
 			double probAns = (ttt + tft) / (ttt + ttf + tft + tff);
-			//System.out.println(folderName);
-			// System.out.println(Math.round(probAns*100) +" %");
+			System.out.println(season);
+			finalRes=(int) Math.round(probAns*100);
+			 System.out.println(finalRes +" %");
 			// System.out.println(0);
-			callPy(0);
+			 switch (season) {
+			case "summer":
+				if(finalRes>threshHoldSummer)
+					pySignal=1;
+				break;
+				
+			case "rainy":
+				if(finalRes>threshHoldRainy)
+					pySignal=1;
+				break;
+				
+			case "winter":
+				if(finalRes>threshHoldWinter)
+					pySignal=1;
+				break;
+
+			default:
+				break;
+			}
+			 System.out.println("py signal "+pySignal);
+			callPy(pySignal);
 
 		}
 
@@ -108,13 +143,42 @@ public class Test {
 		int idate = Integer.parseInt(dateFormat.format(date).toString());
 		//System.out.println(idate); //2016/11/16 12:08:43
 		 
-		if(idate>=2 && idate<8){
-			return "summer";
-		}else if(idate>=8 && idate<11){
-			return "rainy";
+		if(idate>=3 && idate<=6){
+			switch (idate) {
+			case 3:
+				return "summer,r1";
+			case 4:
+				return "summer,r1";
+			case 5:
+				return "summer,r2";
+			case 6:
+				return "summer,r3";
+			}
+			
+		}else if(idate>=7 && idate<=10){
+			switch (idate) {
+			case 7:
+				return "rainy,r1";
+			case 8:
+				return "rainy,r2";
+			case 9:
+				return "rainy,r2";
+			case 10:
+				return "rainy,r3";
+			}
 		}else{
-			return "winter";
+			switch (idate) {
+			case 11:
+				return "winter,r1";
+			case 12:
+				return "winter,r2";
+			case 1:
+				return "winter,r2";
+			case 2:
+				return "winter,r3";
+			}
 		}
+		return null;
 		//return idate;
 	}
 
@@ -194,11 +258,11 @@ public class Test {
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
 			while ((s = stdInput.readLine()) != null) {
-				System.out.println(s);
+				System.out.println("result sent "+s);
 			}
 
 			while ((s = stdError.readLine()) != null) {
-				System.out.println(s);
+				System.out.println("result sent "+s);
 			}
 
 			System.exit(0);
